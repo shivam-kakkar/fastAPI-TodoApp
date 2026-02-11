@@ -1,9 +1,16 @@
+import os
 import uvicorn
 from fastapi import FastAPI
 from time import time
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+from src.config.config import APP_HOST, APP_PORT, DEBUG
 from src.middlewares.logging import log_middleware
 from src.routes.todo_route import router as todo_router
+
+# load environment variables
+load_dotenv()
 
 app = FastAPI()
 
@@ -26,4 +33,4 @@ async def root():
 app.include_router(todo_router, tags=["Todos"])
                 
 if __name__ == "__main__":
-    uvicorn.run("app:app", host="127.0.0.1", port=5566, reload=True)
+    uvicorn.run("app:app", host=APP_HOST, port=APP_PORT, reload=DEBUG)
